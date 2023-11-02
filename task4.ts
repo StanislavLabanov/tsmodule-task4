@@ -12,7 +12,9 @@ interface FetchDataType {
    body: string
 }
 
-const getData = <T extends FetchDataType[]>(url: string): Promise<AxiosResponse<T, any>> => axios.get<T>(url)
+const getData = <T extends FetchDataType[], R extends Promise<AxiosResponse<T, any>>>(url: string): R => {
+   return axios.get<T>(url) as R
+}
 
 getData(`${Addresses.COMMENTS_URL}?_limit=100`)
    .then(data => {
