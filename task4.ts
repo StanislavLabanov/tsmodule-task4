@@ -12,11 +12,13 @@ interface FetchDataType {
    body: string
 }
 
-const getData = <T extends FetchDataType[], R extends Promise<AxiosResponse<T, any>>>(url: string): R => {
-   return axios.get<T>(url) as R
+const getData = <T extends string, D>(url: T) => {
+   return axios.get<D>(url)
 }
 
-getData(`${Addresses.COMMENTS_URL}?_limit=100`)
+const data = getData<string, FetchDataType[]>(`${Addresses.COMMENTS_URL}?_limit=100`)
+
+data
    .then(data => {
       if (data.status === 200) {
          const converted_data = data.data.map(comment => ({ ID: comment.id, Email: comment.email }))
